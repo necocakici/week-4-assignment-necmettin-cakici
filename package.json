@@ -1,0 +1,22 @@
+{
+  "name": "week-4-assignment-necmettin-cakici",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon v1/src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "helmet": "^4.6.0",
+    "http-status": "^1.5.0",
+    "joi": "^17.5.0",
+    "moment": "^2.29.1",
+    "mongoose": "^6.1.0"
+  }
+}
