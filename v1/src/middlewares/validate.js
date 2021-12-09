@@ -2,7 +2,6 @@ const Joi = require("joi");
 const httpStatus = require("http-status");
 
 const validate = (schema) => (req, res, next) => {
-  console.log(`girdi`);
   const { value, error } = schema.validate(req.body);
   if (error) {
     const errorMessage = error.details

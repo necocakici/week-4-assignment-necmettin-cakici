@@ -1,15 +1,30 @@
 const httpStatus = require("http-Status");
+const User = require("../models/User");
 const {
   insert,
   fetchAll,
   fetchOne,
   deleteAndSave,
-} = require("../services/Contacts");
+} = require("../services/Users");
+
+const login = async (req, res) => {
+  try {
+    const user = await User.login(req.body);
+    if (user.username) {
+      res.status(httpStatus.OK).send(user);
+    } else {
+      res.status(httpStatus.BAD_REQUEST).send(user);
+    }
+  } catch (err) {
+    console.log(`err`, err);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).send("err");
+  }
+};
 
 const getAll = async (req, res) => {
   try {
-    const allContacts = await fetchAll();
-    res.status(httpStatus.OK).send(allContacts);
+    const allUsers = await fetchAll();
+    res.status(httpStatus.OK).send(allUsers);
   } catch (err) {
     console.log(`err`, err);
     res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
@@ -19,8 +34,8 @@ const getAll = async (req, res) => {
 const getSingle = async (req, res) => {
   const { id } = req.params;
   try {
-    const contact = await fetchOne(id);
-    res.status(httpStatus.OK).send(contact);
+    const user = await fetchOne(id);
+    res.status(httpStatus.OK).send(user);
   } catch (err) {
     console.log(`err`, err);
     res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
@@ -39,19 +54,19 @@ const create = async (req, res) => {
 
 const update = (req, res) => {
   const { id } = req.params;
-  const { name, phoneNumber } = req.body;
-  res.send(`${id} Name ${name}, phoneNumber ${phoneNumber}`);
+  const { username, password } = req.body;
+  res.send(`${id} username ${username}, password ${password}`);
 };
 
 const remove = async (req, res) => {
   const { id } = req.params;
   try {
-    const deletedContact = await deleteAndSave(id);
-    res.status(httpStatus.OK).send(deletedContact);
+    const deleted = await deleteAndSave(id);
+    res.status(httpStatus.OK).send(deleted);
   } catch (err) {
     console.log(`err`, err);
     res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
   }
 };
 
-module.exports = { getAll, getSingle, create, update, remove };
+module.exports = { getAll, getSingle, create, update, remove, login };
