@@ -4,10 +4,18 @@ const fetchAll = () => {
   return Contact.find();
 };
 
+const fetchOne = (id) => {
+  return Contact.findById(id);
+};
+
 const insert = (contactData) => {
   // Kayıt.
   const newContact = Contact(contactData);
   return newContact.save();
 };
 
-module.exports = { fetchAll, insert };
+const deleteAndSave = (id) => {
+  return Contact.findByIdAndDelete(id);
+};
+
+module.exports = { fetchAll, fetchOne, insert, deleteAndSave };

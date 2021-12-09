@@ -6,13 +6,15 @@ const {
   update,
   remove,
 } = require("../controllers/Contacts");
+const { validate } = require("../middlewares/validate");
+const { createValidation } = require("../validations/Contacts");
 const router = express.Router();
 
 router.get("/", getAll);
 
 router.get("/:id", getSingle);
 
-router.post("/", create);
+router.post("/", validate(createValidation), create);
 
 router.put("/:id", update);
 

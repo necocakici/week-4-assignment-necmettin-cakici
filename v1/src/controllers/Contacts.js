@@ -1,19 +1,30 @@
 const httpStatus = require("http-Status");
-const { insert, fetchAll } = require("../services/Contacts");
+const {
+  insert,
+  fetchAll,
+  fetchOne,
+  deleteAndSave,
+} = require("../services/Contacts");
 
 const getAll = async (req, res) => {
   try {
-    const allProjects = await fetchAll();
-    res.status(httpStatus.OK).send(allProjects);
+    const allContacts = await fetchAll();
+    res.status(httpStatus.OK).send(allContacts);
   } catch (err) {
     console.log(`err`, err);
     res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
   }
 };
 
-const getSingle = (req, res) => {
+const getSingle = async (req, res) => {
   const { id } = req.params;
-  res.send(`GET record with id ${id}`);
+  try {
+    const contact = await fetchOne(id);
+    res.status(httpStatus.OK).send(contact);
+  } catch (err) {
+    console.log(`err`, err);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
+  }
 };
 
 const create = async (req, res) => {
@@ -33,9 +44,15 @@ const update = (req, res) => {
   res.send(`${id} Name ${name}, phoneNumber ${phoneNumber}`);
 };
 
-const remove = (req, res) => {
+const remove = async (req, res) => {
   const { id } = req.params;
-  res.send(`Delete record with id ${id}`);
+  try {
+    const deletedContact = await deleteAndSave(id);
+    res.status(httpStatus.OK).send(deletedContact);
+  } catch (err) {
+    console.log(`err`, err);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
+  }
 };
 
 module.exports = { getAll, getSingle, create, update, remove };
