@@ -19,7 +19,7 @@ router.post("/", validate(createValidation), create);
 
 router.post("/login", login);
 
-router.put("/:id", update);
+router.patch("/:id", update);
 
 router.delete("/:id", remove);
 

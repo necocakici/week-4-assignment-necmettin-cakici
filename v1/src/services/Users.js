@@ -14,8 +14,12 @@ const insert = (userData) => {
   return newUser.save();
 };
 
+const edit = (id, userData) => {
+  return Contact.findByIdAndUpdate(id, userData);
+};
+
 const deleteAndSave = (id) => {
   return User.findByIdAndDelete(id);
 };
 
-module.exports = { fetchAll, fetchOne, insert, deleteAndSave };
+module.exports = { fetchAll, fetchOne, insert, edit, deleteAndSave };

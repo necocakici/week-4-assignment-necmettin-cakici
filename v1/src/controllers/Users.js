@@ -5,6 +5,7 @@ const {
   fetchAll,
   fetchOne,
   deleteAndSave,
+  edit,
 } = require("../services/Users");
 
 const login = async (req, res) => {
@@ -52,10 +53,16 @@ const create = async (req, res) => {
   }
 };
 
-const update = (req, res) => {
+const update = async (req, res) => {
   const { id } = req.params;
-  const { username, password } = req.body;
-  res.send(`${id} username ${username}, password ${password}`);
+  const { body } = req;
+  try {
+    const result = await edit(id, body);
+    res.status(httpStatus.OK).send(result);
+  } catch (err) {
+    console.log(`err`, err);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
+  }
 };
 
 const remove = async (req, res) => {

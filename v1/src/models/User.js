@@ -24,15 +24,13 @@ userSchema.statics.login = async function (userData) {
   //o username'e göre db'de aramaa yapıyorum
   const { username, password } = userData;
   const user = await this.findOne({ username });
-  //console.log(user);
   //varsa
   if (user) {
     //şifreleri crypt ile karşılaştırıyorum
     const bytes = CryptoJS.AES.decrypt(user.password, "myHashKey");
-    const originalText = bytes.toString(CryptoJS.enc.Utf8);
-    //console.log(`originalText`, originalText);
+    const originalPassword = bytes.toString(CryptoJS.enc.Utf8);
     //true dönerse user'ı döndürüyorum
-    if (originalText === password) {
+    if (originalPassword === password) {
       return user;
     } else {
       return "Parola hatalı";

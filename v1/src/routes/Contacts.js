@@ -16,7 +16,7 @@ router.get("/:id", getSingle);
 
 router.post("/", validate(createValidation), create);
 
-router.put("/:id", update);
+router.patch("/:id", update);
 
 router.delete("/:id", remove);
 

@@ -16,14 +16,5 @@ var contactSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-/*contactSchema.pre("save", function () {
-  console.log("pre save");
-  console.log(this);
-});
-
-contactSchema.post("save", (result) => {
-  console.log(`result`, result);
-});*/
-
 //Export the model
 module.exports = mongoose.model("Contact", contactSchema);
