@@ -12,6 +12,10 @@ var contactSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    userId: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+    },
   },
   { timestamps: true }
 );

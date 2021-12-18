@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const helmet = require("helmet");
+const { authToken } = require("./middlewares/auth");
 
 const config = require("./config");
 const loaders = require("./loaders");
@@ -13,7 +14,7 @@ const { ContactRoutes, UserRoutes } = require("./routes/");
 app.use(express.json());
 app.use(helmet());
 
-app.use("/contact", ContactRoutes);
+app.use("/contact", authToken, ContactRoutes);
 app.use("/user", UserRoutes);
 
 app.listen(process.env.APP_PORT, () => {

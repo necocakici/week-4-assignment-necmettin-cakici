@@ -8,8 +8,9 @@ const {
 } = require("../services/Contacts");
 
 const getAll = async (req, res) => {
+  const { user } = req;
   try {
-    const allContacts = await fetchAll();
+    const allContacts = await fetchAll({ userId: user._id });
     res.status(httpStatus.OK).send(allContacts);
   } catch (err) {
     console.log(`err`, err);
@@ -29,8 +30,10 @@ const getSingle = async (req, res) => {
 };
 
 const create = async (req, res) => {
+  let { body, user } = req;
+  body.userId = user._id;
   try {
-    const result = await insert(req.body);
+    const result = await insert(body);
     res.status(httpStatus.CREATED).send(result);
   } catch (err) {
     console.log(`err`, err);

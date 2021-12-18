@@ -4,8 +4,8 @@ const fetchAll = () => {
   return User.find();
 };
 
-const fetchOne = (id) => {
-  return User.findById(id);
+const fetchOne = (where) => {
+  return User.findOne(where);
 };
 
 const insert = (userData) => {

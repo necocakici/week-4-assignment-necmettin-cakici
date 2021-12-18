@@ -19,7 +19,7 @@ userSchema.pre("save", function () {
   this.password = CryptoJS.AES.encrypt(this.password, "myHashKey").toString();
 });
 
-userSchema.statics.login = async function (userData) {
+/*userSchema.statics.login = async function (userData) {
   //console.log("user login", userData);
   //o username'e göre db'de aramaa yapıyorum
   const { username, password } = userData;
@@ -38,7 +38,7 @@ userSchema.statics.login = async function (userData) {
   } else {
     return "Kullanıcı bulunamadı.";
   }
-};
+};*/
 
 //Export the model
 module.exports = mongoose.model("User", userSchema);

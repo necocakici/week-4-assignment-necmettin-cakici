@@ -1,4 +1,7 @@
 const httpStatus = require("http-Status");
+const CryptoJS = require("crypto-js");
+const jwt = require("jsonwebtoken");
+
 const User = require("../models/User");
 const {
   insert,
@@ -9,6 +12,30 @@ const {
 } = require("../services/Users");
 
 const login = async (req, res) => {
+  const { body } = req;
+  try {
+    const user = await fetchOne({ username: body.username });
+    if (user) {
+      console.log(`user`, user);
+      const bytes = CryptoJS.AES.decrypt(user.password, "myHashKey");
+      const decryptedPassword = bytes.toString(CryptoJS.enc.Utf8);
+      console.log(`de`, decryptedPassword);
+      if (body.password === decryptedPassword) {
+        const token = jwt.sign({ user }, "tokensecretkey", { expiresIn: "1w" });
+        res.status(200).send(token);
+      } else {
+        res.status(400).send("Şifre hatalı");
+      }
+    } else {
+      res.status(400).send("Böyle bir e-mail'e kayıtlı kullanıcı yok.");
+    }
+  } catch (err) {
+    console.log(`err`, err);
+    res.status(500).send(err);
+  }
+};
+
+/*const login = async (req, res) => {
   try {
     const user = await User.login(req.body);
     if (user.username) {
@@ -20,7 +47,7 @@ const login = async (req, res) => {
     console.log(`err`, err);
     res.status(httpStatus.INTERNAL_SERVER_ERROR).send("err");
   }
-};
+};*/
 
 const getAll = async (req, res) => {
   try {
@@ -35,7 +62,7 @@ const getAll = async (req, res) => {
 const getSingle = async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await fetchOne(id);
+    const user = await fetchOne({ _id: id });
     res.status(httpStatus.OK).send(user);
   } catch (err) {
     console.log(`err`, err);
@@ -44,8 +71,9 @@ const getSingle = async (req, res) => {
 };
 
 const create = async (req, res) => {
+  let { body } = req;
   try {
-    const result = await insert(req.body);
+    const result = await insert(body);
     res.status(httpStatus.CREATED).send(result);
   } catch (err) {
     console.log(`err`, err);
